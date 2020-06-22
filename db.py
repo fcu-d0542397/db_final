@@ -16,6 +16,7 @@ with open('DB_students.csv',newline='') as csvfile:
         file.write(',')
         if i==len(list_test)-1:
             file.writelines("End")
+            file.writelines("\n")
         else:
             file.write(str(i+2))
             file.writelines("\n")
