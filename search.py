@@ -1,9 +1,11 @@
 import linecache
 import csv
+import sys
+import fileinput
 
 code = input('請輸入功能：')
-studentid = 'D099989583'
-course = '1316'
+studentid = 'D0999983'
+course = '2133'
 search = 0
 start = 0
 lineCount = 0
@@ -18,16 +20,19 @@ def countLine():
                         return count
                 count = count + 1
 def findMin():
+        global lineCount
         lineCount = countLine()
         smallest = 'z'
         temp = '0'
+        smallestPosition = 0
         for i in range(lineCount):
                 read = linecache.getline('order.csv',i+1)
                 read=read.rstrip('\n')
                 temp = read.split(',')
                 if temp[0] < smallest:
-                        smallest = temp[2]
-        return int(smallest)
+                        smallest = temp[0]
+                        smallestPosition = i + 1
+        return smallestPosition
                 
 def searchStuID(count):
         read = linecache.getline('order.csv',count)
@@ -85,14 +90,22 @@ elif code == '3':
                                 csvWriter = csv.writer(fd)
                                 csvWriter.writerow(newData)
                                 rows = csv.reader(fd)
-                                for row in rows:
-                                        if preLine[2]!='End':
-                                                row[int(preLine[2])-1] = [preLine[0],preLine[1],lineCount+1]
-                                csvWriter.writerow(row)
+                        for line in fileinput.input("order.csv", inplace=True):
+                                line = line.replace(preLine[0]+','+preLine[1]+','+preLine[2], preLine[0]+','+compare[1]+','+str(lineCount+1))
+                                sys.stdout.write(line)
                         break
                 else:
-                        # print(compare[2])
                         if compare[2]!='End':
                                 first = int(compare[2])
                                 preLine = compare
-                        else: int(preLine[2])+2
+                        else: 
+                                with open('order.csv','a+',newline='') as fd:
+                                        newData = [inputStuid,inputCourse,'End']
+                                        csvWriter = csv.writer(fd)
+                                        csvWriter.writerow(newData)
+                                        rows = csv.reader(fd)
+                                for line in fileinput.input("order.csv", inplace=True):
+                                        line = line.replace(compare[0]+','+compare[1]+','+compare[2], compare[0]+','+preLine[1]+','+str(lineCount+1))
+                                        sys.stdout.write(line)
+                                break
+
