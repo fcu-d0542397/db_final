@@ -133,8 +133,8 @@ elif code == '3':
                                 break
 elif code == '4':
         first = start
-        inputStuid = input('請輸入插入學號：')
-        inputCourse = input('請輸入插入課號：')
+        inputStuid = input('請輸入刪除學號：')
+        inputCourse = input('請輸入刪除課號：')
         preLine = ['0','0',str(start)]
         fix = 0
         # print(fileinput.input("order.csv", inplace=True).readline()) 
@@ -163,7 +163,9 @@ elif code == '4':
                         if compare[2]!='End':
                                 first = int(compare[2])
                                 preLine = compare
-                        else: break
+                        else: 
+                                print('找不到資料')
+                                break
 
         if fix != 0:
                 f = open('order.csv','r',buffering=1)
@@ -171,15 +173,12 @@ elif code == '4':
                 linecache.clearcache()
                 linecache.cache = {}
                 for i in range(lineCount):
-                        # print(lineCount)
                         compare = insertData(i + 1)
                         if (compare[2] != 'End'):
                                 if (int(compare[2]) > fix ):
                                         flist[i] = compare[0]+','+compare[1]+','+str(int(compare[2])-1)+'\n'
-                                        f = open('order.csv','w',buffering=1)
-                                        f.writelines(flist)
-                                
-
+                f = open('order.csv','w',buffering=1)
+                f.writelines(flist)
                 f.close()
 
 
