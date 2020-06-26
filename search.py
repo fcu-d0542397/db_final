@@ -91,7 +91,7 @@ elif code == '3':
                                 csvWriter.writerow(newData)
                                 rows = csv.reader(fd)
                         for line in fileinput.input("order.csv", inplace=True):
-                                line = line.replace(preLine[0]+','+preLine[1]+','+preLine[2], compare[0]+','+compare[1]+','+str(lineCount+1))
+                                line = line.replace(preLine[0]+','+preLine[1]+','+preLine[2], preLine[0]+','+preLine[1]+','+str(lineCount+1))
                                 sys.stdout.write(line)
                         break
                 else:
@@ -105,7 +105,7 @@ elif code == '3':
                                         csvWriter.writerow(newData)
                                         rows = csv.reader(fd)
                                 for line in fileinput.input("order.csv", inplace=True,backup="",bufsize=1):
-                                        line = line.replace(compare[0]+','+compare[1]+','+compare[2], compare[0]+','+compare[1]+','+str(lineCount+1))
+                                        line = line.replace(compare[0]+','+compare[1]+','+compare[2], preLine[0]+','+preLine[1]+','+str(lineCount+1))
                                         sys.stdout.write(line)
                                 break
 elif code == '4':
