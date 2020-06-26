@@ -78,7 +78,7 @@ elif code == '2':
         for i in range(len(courseList)):
                 print('StudentID: '+courseList[i][0]+' Course: '+courseList[i][1])
 elif code == '3':
-        preLine = [0,0,0]
+        preLine = ['0','0','0']
         first = start
         inputStuid = input('請輸入插入學號：')
         inputCourse = input('請輸入插入課號：')
@@ -91,7 +91,7 @@ elif code == '3':
                                 csvWriter.writerow(newData)
                                 rows = csv.reader(fd)
                         for line in fileinput.input("order.csv", inplace=True):
-                                line = line.replace(preLine[0]+','+preLine[1]+','+preLine[2], preLine[0]+','+compare[1]+','+str(lineCount+1))
+                                line = line.replace(preLine[0]+','+preLine[1]+','+preLine[2], compare[0]+','+compare[1]+','+str(lineCount+1))
                                 sys.stdout.write(line)
                         break
                 else:
@@ -104,8 +104,32 @@ elif code == '3':
                                         csvWriter = csv.writer(fd)
                                         csvWriter.writerow(newData)
                                         rows = csv.reader(fd)
-                                for line in fileinput.input("order.csv", inplace=True):
-                                        line = line.replace(compare[0]+','+compare[1]+','+compare[2], compare[0]+','+preLine[1]+','+str(lineCount+1))
+                                for line in fileinput.input("order.csv", inplace=True,backup="",bufsize=1):
+                                        line = line.replace(compare[0]+','+compare[1]+','+compare[2], compare[0]+','+compare[1]+','+str(lineCount+1))
                                         sys.stdout.write(line)
                                 break
+elif code == '4':
+        first = start
+        inputStuid = 'D000003506'
+        inputCourse = '2171'
+        preLine = ['0','0','0']
+        # print(fileinput.input("order.csv", inplace=True).readline()) 
+        while True:
+                compare = insertData(first)
+                # if (compare[0] == inputStuid) & (compare[1] == inputCourse):
+                #         if preLine == ['0','0','0']:
+                #                 for line in fileinput.input("order.csv",inplace=False,backup="",bufsize=1024):
+                #                         line = line.replace(compare[0]+','+compare[1]+','+compare[2],'')
+                #                         sys.stdout.write(line)
+                #                         break
+                #         else: 
+                                 
+                
+                                  
+
+
+        # for line in fileinput.input("order.csv", inplace=True):
+        #         line = line.replace(compare[0]+','+compare[1]+','+compare[2], compare[0]+','+preLine[1]+','+str(lineCount+1))
+        #         sys.stdout.write(line)
+
 
