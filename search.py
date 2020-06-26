@@ -111,19 +111,50 @@ elif code == '3':
                                 break
 elif code == '4':
         first = start
-        inputStuid = 'D000003506'
-        inputCourse = '2171'
-        preLine = ['0','0','0']
+        inputStuid = 'D0552277'
+        inputCourse = '2211'
+        preLine = ['0','0',str(start)]
+        fix = 0
         # print(fileinput.input("order.csv", inplace=True).readline()) 
         while True:
                 compare = insertData(first)
-                # if (compare[0] == inputStuid) & (compare[1] == inputCourse):
-                #         if preLine == ['0','0','0']:
-                #                 for line in fileinput.input("order.csv",inplace=False,backup="",bufsize=1024):
-                #                         line = line.replace(compare[0]+','+compare[1]+','+compare[2],'')
-                #                         sys.stdout.write(line)
-                #                         break
-                #         else: 
+                if (compare[0] == inputStuid) & (compare[1] == inputCourse):
+                        f = open('order.csv','r',buffering=1)
+                        flist = f.readlines()
+                        flist[int(preLine[2])-1]=''
+                        f = open('order.csv','w',buffering=1)
+                        f.writelines(flist)
+                        f.close()
+                        fix = int(compare[2])
+                        lineCount = lineCount - 1
+                        break
+                else:
+                        if compare[2]!='End':
+                                first = int(compare[2])
+                                preLine = compare
+                        else: break
+
+        if fix != 0:
+                # print(fix)
+                f = open('order.csv','r',buffering=1)
+                for i in range(lineCount):
+                        print(lineCount)
+                        compare = insertData(i + 1)
+                        if (int(compare[2]) > fix ) & (compare[2] != 'End'):
+                                flist = f.readlines()
+                                # print(flist)
+                                # print(compare)
+                                print(i)
+                                flist[i-1] = compare[0]+','+compare[1]+','+str(int(compare[2])-1)+'\n'
+                                # print(flist)
+                                f = open('order.csv','w',buffering=1)
+                                f.writelines(flist)
+                                
+
+                f.close()
+
+
+
                                  
                 
                                   
