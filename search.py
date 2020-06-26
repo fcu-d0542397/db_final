@@ -78,7 +78,7 @@ elif code == '2':
         for i in range(len(courseList)):
                 print('StudentID: '+courseList[i][0]+' Course: '+courseList[i][1])
 elif code == '3':
-        preLine = ['0','0','0']
+        preLine = ['0','0',str(start)]
         first = start
         inputStuid = input('請輸入插入學號：')
         inputCourse = input('請輸入插入課號：')
@@ -86,6 +86,7 @@ elif code == '3':
                 compare = insertData(first)
                 if compare[0] > inputStuid:
                         with open('order.csv','a+',newline='') as fd:
+                                print(compare[0])
                                 newData = [inputStuid,inputCourse,preLine[2]]
                                 csvWriter = csv.writer(fd)
                                 csvWriter.writerow(newData)
