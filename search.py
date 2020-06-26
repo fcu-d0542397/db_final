@@ -13,6 +13,8 @@ studentCourse = []
 courseList = []
 def countLine():
         count = 1
+        linecache.clearcache()
+        linecache.cache = {}
         while True:
                 read = linecache.getline('order.csv',count)
                 if read == '':
@@ -25,6 +27,8 @@ def findMin():
         smallest = 'z'
         temp = '0'
         smallestPosition = 0
+        linecache.clearcache()
+        linecache.cache = {}
         for i in range(lineCount):
                 read = linecache.getline('order.csv',i+1)
                 read=read.rstrip('\n')
@@ -33,6 +37,23 @@ def findMin():
                         smallest = temp[0]
                         smallestPosition = i + 1
         return smallestPosition
+
+def findMax():
+        global lineCount
+        lineCount = countLine()
+        max = '0'
+        temp = '0'
+        maxPosition = 0
+        linecache.clearcache()
+        linecache.cache = {}
+        for i in range(lineCount):
+                read = linecache.getline('order.csv',i+1)
+                read=read.rstrip('\n')
+                temp = read.split(',')
+                if temp[0] >= max:
+                        max = temp[0]
+                        maxPosition = i + 1
+        return maxPosition
                 
 def searchStuID(count):
         read = linecache.getline('order.csv',count)
@@ -56,6 +77,7 @@ def insertData(count):
         
 
 start = findMin()
+print(findMax())
 if code == '1':
         first = start
         while True:
@@ -63,7 +85,7 @@ if code == '1':
                 if endFlag=='End':
                         break
                 else:
-                        first =int(endFlag)
+                        first = int(endFlag)
         # print(studentCourse)
         for i in range(len(studentCourse)):
                 print('StudentID: '+studentCourse[i][0]+' Course: '+studentCourse[i][1])
@@ -86,7 +108,7 @@ elif code == '3':
                 compare = insertData(first)
                 if compare[0] > inputStuid:
                         with open('order.csv','a+',newline='') as fd:
-                                print(compare[0])
+                                # print(compare[0])
                                 newData = [inputStuid,inputCourse,preLine[2]]
                                 csvWriter = csv.writer(fd)
                                 csvWriter.writerow(newData)
@@ -111,8 +133,8 @@ elif code == '3':
                                 break
 elif code == '4':
         first = start
-        inputStuid = 'D0552277'
-        inputCourse = '2211'
+        inputStuid = input('請輸入插入學號：')
+        inputCourse = input('請輸入插入課號：')
         preLine = ['0','0',str(start)]
         fix = 0
         # print(fileinput.input("order.csv", inplace=True).readline()) 
@@ -125,8 +147,17 @@ elif code == '4':
                         f = open('order.csv','w',buffering=1)
                         f.writelines(flist)
                         f.close()
-                        fix = int(compare[2])
-                        lineCount = lineCount - 1
+                        if(compare[2] == 'End'):
+                                f = open('order.csv','r',buffering=1)
+                                flist = f.readlines()
+                                end = findMax()
+                                newEnd =  insertData(end)
+                                flist[end-1] = newEnd[0]+','+newEnd[1]+','+'End\n'
+                                f = open('order.csv','w',buffering=1)
+                                f.writelines(flist)
+                        else:
+                                fix = int(compare[2])
+                                lineCount = lineCount - 1
                         break
                 else:
                         if compare[2]!='End':
@@ -135,20 +166,18 @@ elif code == '4':
                         else: break
 
         if fix != 0:
-                # print(fix)
                 f = open('order.csv','r',buffering=1)
+                flist = f.readlines()
+                linecache.clearcache()
+                linecache.cache = {}
                 for i in range(lineCount):
-                        print(lineCount)
+                        # print(lineCount)
                         compare = insertData(i + 1)
-                        if (int(compare[2]) > fix ) & (compare[2] != 'End'):
-                                flist = f.readlines()
-                                # print(flist)
-                                # print(compare)
-                                print(i)
-                                flist[i-1] = compare[0]+','+compare[1]+','+str(int(compare[2])-1)+'\n'
-                                # print(flist)
-                                f = open('order.csv','w',buffering=1)
-                                f.writelines(flist)
+                        if (compare[2] != 'End'):
+                                if (int(compare[2]) > fix ):
+                                        flist[i] = compare[0]+','+compare[1]+','+str(int(compare[2])-1)+'\n'
+                                        f = open('order.csv','w',buffering=1)
+                                        f.writelines(flist)
                                 
 
                 f.close()
